@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chrome-headless-deployment
+  labels:
+    app: chrome-headless
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: chrome-headless
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5    
+  template:
+    metadata:
+      labels:
+        app: chrome-headless
+    spec:
+      containers:
+        - name: chrome-headless
+          image: asia.gcr.io/dazzling-byway-187403/chrome-headless:{{.ImageTag}}
+          ports:
+            - name: chrome-port
+              containerPort: 9222
+          securityContext:
+            capabilities:
+              add:
+                - SYS_ADMIN
+          resources:
+            requests:
+              cpu: 700m
+              memory: 2048Mi
+            limits:
+              cpu: 1000M
+              memory: 3096Mi
+          livenessProbe:
+            httpGet:
+              path: /json/version
+              port: chrome-port
+            initialDelaySeconds: 15
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /json/version
+              port: chrome-port
+            initialDelaySeconds: 15
+            timeoutSeconds: 30
+        - name: websocket-api
+          image: asia.gcr.io/dazzling-byway-187403/websocketapi:{{.ImageTag}}
+          ports:
+            - name: wsapi-port
+              containerPort: 8080
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 50m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: wsapi-port
+            initialDelaySeconds: 15
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: wsapi-port
+            initialDelaySeconds: 15
+            timeoutSeconds: 30
+      nodeSelector:
+        utility: chrome-headless

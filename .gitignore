@@ -1,0 +1,15 @@
+.venv
+data
+config.py
+*/config_production.py
+
+.DS_Store
+__pycache__
+
+**.txt
+**.html
+**.ipynb
+**.cache**
+
+*/proxies
+.vscode

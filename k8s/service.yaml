@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chrome-headless-service
+spec:
+  ports:
+    - port: 8080
+      targetPort: wsapi-port
+      protocol: TCP
+  selector:
+    app: chrome-headless
+  type: NodePort
