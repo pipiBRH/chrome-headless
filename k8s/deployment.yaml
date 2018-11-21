@@ -5,7 +5,7 @@ metadata:
   labels:
     app: chrome-headless
 spec:
-  replicas: 10
+  replicas: 2
   selector:
     matchLabels:
       app: chrome-headless
@@ -22,7 +22,8 @@ spec:
     spec:
       containers:
         - name: chrome-headless
-          image: asia.gcr.io/dazzling-byway-187403/chrome-headless:{{.ImageTag}}
+          # image: asia.gcr.io/a8843526/chrome-headless:{{.ImageTag}}
+          image: asia.gcr.io/a8843526/chrome-headless:latest
           ports:
             - name: chrome-port
               containerPort: 9222
@@ -50,7 +51,8 @@ spec:
             initialDelaySeconds: 15
             timeoutSeconds: 30
         - name: websocket-api
-          image: asia.gcr.io/dazzling-byway-187403/websocketapi:{{.ImageTag}}
+          # image: asia.gcr.io/a8843526/websocketapi:{{.ImageTag}}
+          image: asia.gcr.io/a8843526/websocketapi:latest
           ports:
             - name: wsapi-port
               containerPort: 8080

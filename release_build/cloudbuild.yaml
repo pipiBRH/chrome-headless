@@ -1,20 +1,24 @@
 timeout: 1800s
 steps:
   - name: "gcr.io/cloud-builders/docker"
-    args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/chrome-headless:$TAG_NAME', 'chrome/.']
+    # args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/chrome-headless:$TAG_NAME', 'chrome/.']
+    args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/chrome-headless:latest', 'chrome/.']
     id: "build-chrome-gcr"
   - name: "gcr.io/cloud-builders/docker"
-    args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/websocketapi:$TAG_NAME', 'proxy_api/.']
+    # args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/websocketapi:$TAG_NAME', 'proxy_api/.']
+    args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/websocketapi:latest', 'proxy_api/.']
     id: "build-proxy-gcr"
   - name: "gcr.io/cloud-builders/docker"
-    args: ['push', 'asia.gcr.io/$PROJECT_ID/websocketapi:$TAG_NAME']
+    # args: ['push', 'asia.gcr.io/$PROJECT_ID/websocketapi:$TAG_NAME']
+    args: ['push', 'asia.gcr.io/$PROJECT_ID/websocketapi:latest']
     id: "push-proxy-gcr"
   - name: "gcr.io/cloud-builders/docker"
-    args: ['push', 'asia.gcr.io/$PROJECT_ID/chrome-headless:$TAG_NAME']
+    # args: ['push', 'asia.gcr.io/$PROJECT_ID/chrome-headless:$TAG_NAME']
+    args: ['push', 'asia.gcr.io/$PROJECT_ID/chrome-headless:latest']
     id: "push-chrome-gcr"  
-  - name: "asia.gcr.io/dazzling-byway-187403/mb8"
-    args: ['mb8', '-t', '$TAG_NAME', '-f', "./k8s"]
-    id: "mb8"  
+  # - name: "asia.gcr.io/$PROJECT_ID/pipi8"
+  #   args: ['pipi8', '-t', '$TAG_NAME', '-f', "./k8s"]
+  #   id: "pipi8"  
   - name: "gcr.io/cloud-builders/kubectl"
     args: ["apply", "-f", "k8s"]
     env:

@@ -9,4 +9,4 @@ spec:
       protocol: TCP
   selector:
     app: chrome-headless
-  type: NodePort
+  # type: LoadBalancer
